@@ -23,6 +23,7 @@
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
       width: 90%;
       max-width: 500px;
+      box-sizing: border-box;
     }
     label, select, input, textarea {
       display: block;
@@ -33,6 +34,14 @@
       border: none;
       padding: 8px;
       border-radius: 5px;
+      font-family: 'Century Gothic', sans-serif;
+      box-sizing: border-box;
+    }
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
     }
     button {
       background-color: #444;
@@ -41,7 +50,7 @@
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
-      margin-right: 10px;
+      font-family: 'Century Gothic', sans-serif;
     }
     button:hover {
       background-color: #666;
@@ -62,10 +71,12 @@
       margin: 15% auto;
       padding: 20px;
       border: 1px solid #888;
-      width: 80%;
+      width: 90%;
       max-width: 500px;
       border-radius: 10px;
       color: #fff;
+      font-family: 'Century Gothic', sans-serif;
+      box-sizing: border-box;
     }
     .close {
       color: #aaa;
@@ -107,7 +118,7 @@
     <label>rx:</label>
     <input type="text" id="rx">
 
-    <label>res: advised agt to </label>
+    <label>res: advised agt to</label>
     <select id="resolutionDropdown">
       <option>review accumulators (deductible and out-of-pocket)</option>
       <option>explore alternative medication options</option>
@@ -127,16 +138,20 @@
 
     <input type="text" id="resolutionText" placeholder="additional notes">
 
-    <button onclick="generateNote()">submit</button>
-    <button onclick="clearForm()">cancel</button>
+    <div class="button-row">
+      <button onclick="generateNote()">submit</button>
+      <button onclick="clearForm()">cancel</button>
+    </div>
   </div>
 
   <div id="noteModal" class="modal">
-    <div class="modal-content" style="font-family: 'Century Gothic', sans-serif;">
+    <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
       <textarea id="output" rows="10" readonly style="width:100%; font-family: 'Century Gothic', sans-serif;"></textarea>
-      <button onclick="copyNote()">copy</button>
-      <button onclick="resetPage()">reset</button>
+      <div class="button-row">
+        <button onclick="copyNote()">copy</button>
+        <button onclick="resetPage()">reset</button>
+      </div>
     </div>
   </div>
 
