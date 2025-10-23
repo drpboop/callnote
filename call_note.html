@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Call Note Form</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Century+Gothic&display=swap');
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Century Gothic', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      width: 90%;
+      max-width: 500px;
+    }
+    label, select, input, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      background-color: #222;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background-color: #111;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      color: #fff;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <label>agt call regarding:</label>
+    <input type="text" id="agent">
+
+    <label>agt speaking to:</label>
+    <select id="speakingTo">
+      <option>member</option>
+      <option>pharmacy</option>
+      <option>provider</option>
+      <option>spouse</option>
+      <option>poa</option>
+      <option>authorized representative</option>
+      <option>alexa (ai)</option>
+      <option>covermymeds representative</option>
+      <option>parent of minor</option>
+      <option>prime vendor</option>
+      <option>dte client group</option>
+      <option>third party</option>
+      <option>cms test caller</option>
+    </select>
+
+    <label>rx:</label>
+    <input type="text" id="rx">
+
+    <label>res:</label>
+    <select id="resolutionDropdown">
+      <option>advised agt to review accumulators (deductible and out-of-pocket)</option>
+      <option>advised agt to explore alternative medication options</option>
+      <option>advised agt to initiate a callback</option>
+      <option>advised agt to verify copay/coinsurance details via benefits</option>
+      <option>advised agt to confirm coverage for rx</option>
+      <option>advised agt to create pr case per j/a</option>
+      <option>advised agt to inform of formulary exception/coverage exception</option>
+      <option>advised agt on how to resolve claim reject per j/a</option>
+      <option>advised agt to apply override per psa j/a</option>
+      <option>advised agt to initiate/fax forms for prior authorization</option>
+      <option>advised agt on prior authorization denial reasoning</option>
+      <option>advised agt to reach out to clinical regarding prior authorization for rx</option>
+      <option>advised agt to check quantity limits on rx</option>
+      <option>advised agt to check mbr eligibility</option>
+    </select>
+
+    <input type="text" id="resolutionText" placeholder="Additional resolution notes">
+
+    <button onclick="generateNote()">Submit</button>
+    <button onclick="clearForm()">Cancel</button>
+  </div>
+
+  <div id="noteModal" class="modal">
+    <div class="modal-content" style="font-family: 'Century Gothic', sans-serif;">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <textarea id="output" rows="10" readonly style="width:100%; font-family: 'Century Gothic', sans-serif;"></textarea>
+      <button onclick="copyNote()">Copy</button>
+      <button onclick="resetPage()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    function generateNote() {
+      const agent = document.getElementById('agent').value;
+      const speakingTo = document.getElementById('speakingTo').value;
+      const rx = document.getElementById('rx').value;
+      const resolutionDropdown = document.getElementById('resolutionDropdown').value;
+      const resolutionText = document.getElementById('resolutionText').value;
+
+      const note = `agt call regarding: ${agent}
+agt speaking to: ${speakingTo}
+rx: ${rx}
+res: ${resolutionDropdown} - ${resolutionText}`;
+      document.getElementById('output').value = note;
+      document.getElementById('noteModal').style.display = 'block';
+    }
+
+    function copyNote() {
+      const output = document.getElementById('output');
+      output.select();
+      document.execCommand('copy');
+    }
+
+    function clearForm() {
+      document.getElementById('agent').value = '';
+      document.getElementById('speakingTo').selectedIndex = 0;
+      document.getElementById('rx').value = '';
+      document.getElementById('resolutionDropdown').selectedIndex = 0;
+      document.getElementById('resolutionText').value = '';
+    }
+
+    function resetPage() {
+      location.reload();
+    }
+
+    function closeModal() {
+      document.getElementById('noteModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
