@@ -5,20 +5,12 @@
   <title>Call Note Form</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Century+Gothic&display=swap');
-    html, body {
-      min-width: 520px;
-      min-height: 600px;
-      overflow: hidden; /* disables all scrolling */
-    }
     body {
       background-color: #000;
       color: #fff;
       font-family: 'Century Gothic', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
+      padding: 20px;
     }
     .container {
       background-color: #111;
@@ -27,6 +19,7 @@
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
       width: 90%;
       max-width: 500px;
+      margin: 0 auto;
       box-sizing: border-box;
     }
     label, select, input, textarea {
@@ -67,7 +60,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      overflow: auto;
       background-color: rgba(0,0,0,0.8);
     }
     .modal-content {
