@@ -91,6 +91,9 @@
 </head>
 <body>
   <div class="container">
+    <label>agt id:</label>
+    <input type="text" id="agentId">
+
     <label>agt call regarding:</label>
     <input type="text" id="agent">
 
@@ -117,6 +120,7 @@
 
     <label>res: advised agt to</label>
     <select id="resolutionDropdown">
+      <option value="">-- select an option --</option>
       <option>review accumulators (deductible and out-of-pocket)</option>
       <option>explore alternative medication options</option>
       <option>initiate a callback</option>
@@ -155,12 +159,14 @@
   <script>
     function generateNote() {
       const agent = document.getElementById('agent').value;
+      const agentId = document.getElementById('agentId').value;
       const speakingTo = document.getElementById('speakingTo').value;
       const rx = document.getElementById('rx').value;
       const resolutionDropdown = document.getElementById('resolutionDropdown').value;
       const resolutionText = document.getElementById('resolutionText').value;
 
-      const note = `agt call regarding: ${agent}
+      const note = `agt id: ${agentId}
+agt call regarding: ${agent}
 agt speaking to: ${speakingTo}
 rx: ${rx}
 res: advised agt to ${resolutionDropdown} - ${resolutionText}`;
@@ -176,6 +182,7 @@ res: advised agt to ${resolutionDropdown} - ${resolutionText}`;
 
     function clearForm() {
       document.getElementById('agent').value = '';
+      document.getElementById('agentId').value = '';
       document.getElementById('speakingTo').selectedIndex = 0;
       document.getElementById('rx').value = '';
       document.getElementById('resolutionDropdown').selectedIndex = 0;
