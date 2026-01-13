@@ -36,6 +36,29 @@
       font-family: 'Century Gothic', sans-serif;
       box-sizing: border-box;
     }
+    /* Auto-expanding notes textarea */
+    textarea#resolutionText {
+      min-height: 100px;        /* comfortable starting height */
+      resize: vertical;         /* allow user to resize vertically if desired */
+      line-height: 1.4;
+      white-space: pre-wrap;    /* preserve newlines, wrap long lines */
+      word-wrap: break-word;
+      overflow: hidden;         /* hide scrollbar; we’ll expand height to fit */
+    }
+    /* Auto-expanding output textarea in modal */
+    textarea#output {
+      min-height: 120px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow: hidden;         /* enable auto-expand without scrollbar */
+      background-color: #222;
+      border: none;
+      color: #fff;
+      padding: 8px;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
     .button-row {
       display: flex;
       justify-content: center;
@@ -76,18 +99,19 @@
       color: #fff;
       font-family: 'Century Gothic', sans-serif;
       box-sizing: border-box;
+      position: relative;
     }
     .close {
       color: #aaa;
       float: right;
       font-size: 28px;
       font-weight: bold;
+      cursor: pointer;
     }
     .close:hover,
     .close:focus {
       color: #fff;
       text-decoration: none;
-      cursor: pointer;
     }
     .error {
       color: #ff6b6b;
@@ -151,7 +175,9 @@
       <option>xfer caller</option>
     </select>
 
-    <input type="text" id="resolutionText" placeholder="additional notes">
+    <!-- Multi-line auto-expanding additional notes -->
+    <label for="resolutionText">additional notes</label>
+    <textarea id="resolutionText" placeholder="add context, steps taken, names, times, etc."></textarea>
 
     <div class="button-row">
       <button onclick="generateNote()">submit</button>
@@ -162,7 +188,7 @@
   <div id="noteModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <textarea id="output" rows="10" readonly style="width:100%; font-family: 'Century Gothic', sans-serif;"></textarea>
+      <textarea id="output" readonly></textarea>
       <div class="button-row">
         <button onclick="copyNote()">copy</button>
         <button onclick="resetPage()">reset</button>
@@ -171,6 +197,13 @@
   </div>
 
   <script>
+    // Auto-expand textarea to fit content
+    function autoExpand(el) {
+      if (!el) return;
+      el.style.height = 'auto';                 // reset height
+      el.style.height = el.scrollHeight + 'px'; // set to content height
+    }
+
     function generateNote() {
       // Validate ONLY the "agt speaking to" placeholder
       const speakingToSelect = document.getElementById('speakingTo');
@@ -198,7 +231,9 @@ agt call regarding: ${agent}
 rx: ${rx}
 res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
 
-      document.getElementById('output').value = note;
+      const outputEl = document.getElementById('output');
+      outputEl.value = note;
+      autoExpand(outputEl); // ensure output resizes to fit content
       document.getElementById('noteModal').style.display = 'block';
     }
 
@@ -216,6 +251,9 @@ res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
       document.getElementById('resolutionDropdown').selectedIndex = 0;
       document.getElementById('resolutionText').value = '';
       document.getElementById('speakingToError').textContent = '';
+      // Reset textarea heights
+      autoExpand(document.getElementById('resolutionText'));
+      autoExpand(document.getElementById('output'));
     }
 
     function resetPage() {
@@ -225,6 +263,19 @@ res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
     function closeModal() {
       document.getElementById('noteModal').style.display = 'none';
     }
+
+    // Initialize auto-expanding behavior on load and input
+    document.addEventListener('DOMContentLoaded', () => {
+      const notes = document.getElementById('resolutionText');
+      autoExpand(notes);
+      notes.addEventListener('input', () => autoExpand(notes));
+
+      const outputEl = document.getElementById('output');
+      autoExpand(outputEl);
+      // For completeness, allow programmatic update to re-trigger autoExpand (handled in generateNote)
+      // If you later make the output editable (remove readonly), this will also expand on typing:
+      outputEl.addEventListener('input', () => autoExpand(outputEl));
+    });
   </script>
 </body>
 </html>
