@@ -95,9 +95,9 @@
       margin: 6px 0;
     }
 
-    /* Additional notes: auto-expand vertically (no label, placeholder shows the text) */
+    /* Additional notes: starts shorter, auto-expands vertically while typing */
     textarea#resolutionText {
-      min-height: 100px;        /* comfortable starting height */
+      min-height: 60px;         /* shorter starting height */
       resize: vertical;         /* allow manual vertical resize if desired */
       line-height: 1.4;
       white-space: pre-wrap;    /* preserve newlines, wrap long lines */
@@ -105,9 +105,10 @@
       overflow: hidden;         /* hide scrollbar; height expands to fit content */
     }
 
-    /* Output textarea: fixed height with scrollbar (no auto-expand) */
+    /* Output textarea: fixed height, not resizable, scrollable, readonly */
     textarea#output {
       height: 160px;            /* fixed preview height */
+      resize: none;             /* prevent any manual resizing */
       overflow: auto;           /* scroll within the box */
       line-height: 1.4;
       white-space: pre-wrap;
@@ -175,7 +176,7 @@
       <option>xfer caller</option>
     </select>
 
-    <!-- Additional notes: no label; placeholder reads "additional notes"; auto-expands -->
+    <!-- Additional notes: placeholder reads "additional notes" and auto-expands -->
     <textarea id="resolutionText" placeholder="additional notes"></textarea>
 
     <div class="button-row">
@@ -199,9 +200,8 @@
     // Auto-expand notes textarea to fit content (output does NOT auto-expand)
     function autoExpand(el) {
       if (!el) return;
-      // Reset and then set to content height
-      el.style.height = 'auto';
-      el.style.height = el.scrollHeight + 'px';
+      el.style.height = 'auto';                 // reset height
+      el.style.height = el.scrollHeight + 'px'; // set to content height
     }
 
     function generateNote() {
@@ -233,7 +233,7 @@ res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
 
       const outputEl = document.getElementById('output');
       outputEl.value = note;
-      // Output remains fixed height with scrollbar (no auto-expand)
+      // Output remains fixed height with scrollbar and cannot be resized
       document.getElementById('noteModal').style.display = 'block';
     }
 
