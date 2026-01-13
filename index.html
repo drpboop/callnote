@@ -95,14 +95,14 @@
       margin: 6px 0;
     }
 
-    /* Additional notes: auto-expand while typing (simple labeled typing area) */
+    /* Additional notes: auto-expand vertically (no label, placeholder shows the text) */
     textarea#resolutionText {
       min-height: 100px;        /* comfortable starting height */
       resize: vertical;         /* allow manual vertical resize if desired */
       line-height: 1.4;
       white-space: pre-wrap;    /* preserve newlines, wrap long lines */
       word-wrap: break-word;
-      overflow: hidden;         /* hide scrollbar; height expands to fit */
+      overflow: hidden;         /* hide scrollbar; height expands to fit content */
     }
 
     /* Output textarea: fixed height with scrollbar (no auto-expand) */
@@ -175,9 +175,8 @@
       <option>xfer caller</option>
     </select>
 
-    <!-- Additional notes: same simple labeled typing area, auto-expand as you type -->
-    <label for="resolutionText">additional notes</label>
-    <textarea id="resolutionText" placeholder="add context, steps taken, names, times, etc."></textarea>
+    <!-- Additional notes: no label; placeholder reads "additional notes"; auto-expands -->
+    <textarea id="resolutionText" placeholder="additional notes"></textarea>
 
     <div class="button-row">
       <button onclick="generateNote()">submit</button>
@@ -200,8 +199,9 @@
     // Auto-expand notes textarea to fit content (output does NOT auto-expand)
     function autoExpand(el) {
       if (!el) return;
-      el.style.height = 'auto';                 // reset height
-      el.style.height = el.scrollHeight + 'px'; // set to content height
+      // Reset and then set to content height
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
     }
 
     function generateNote() {
@@ -233,7 +233,7 @@ res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
 
       const outputEl = document.getElementById('output');
       outputEl.value = note;
-      // Do NOT auto-expand output; keep fixed height with scrollbar
+      // Output remains fixed height with scrollbar (no auto-expand)
       document.getElementById('noteModal').style.display = 'block';
     }
 
@@ -251,8 +251,9 @@ res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
       document.getElementById('resolutionDropdown').selectedIndex = 0;
       document.getElementById('resolutionText').value = '';
       document.getElementById('speakingToError').textContent = '';
-      // Reset notes textarea height
-      autoExpand(document.getElementById('resolutionText'));
+      // Reset notes textarea height back to minimum
+      const notes = document.getElementById('resolutionText');
+      notes.style.height = ''; // clears inline height so CSS min-height applies
     }
 
     function resetPage() {
@@ -263,11 +264,11 @@ res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
       document.getElementById('noteModal').style.display = 'none';
     }
 
-    // Initialize notes auto-expanding behavior on load and input (output excluded)
+    // Initialize notes auto-expanding behavior on load and input
     document.addEventListener('DOMContentLoaded', () => {
       const notes = document.getElementById('resolutionText');
-      autoExpand(notes);
-      notes.addEventListener('input', () => autoExpand(notes));
+      autoExpand(notes); // fit any prefilled content
+      notes.addEventListener('input', () => autoExpand(notes)); // expand while typing
     });
   </script>
 </body>
