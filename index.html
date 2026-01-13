@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Call Note Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Century+Gothic&display=swap');
     body {
@@ -87,54 +89,64 @@
       text-decoration: none;
       cursor: pointer;
     }
+    .error {
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      margin: 6px 0;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <label>agt id:</label>
+    <label for="agentId">agt id:</label>
     <input type="text" id="agentId">
 
-    <label>agt call regarding:</label>
+    <!-- agt speaking to: moved above "agt call regarding" with placeholder and validation -->
+    <label for="speakingTo">agt speaking to:</label>
+    <select id="speakingTo">
+      <option value="">-- select an option --</option>
+      <!-- alphabetized list as requested earlier -->
+      <option value="alexa (ai)">alexa (ai)</option>
+      <option value="authorized representative">authorized representative</option>
+      <option value="cms test caller">cms test caller</option>
+      <option value="covermymeds representative">covermymeds representative</option>
+      <option value="dte client group">dte client group</option>
+      <option value="member">member</option>
+      <option value="parent of minor">parent of minor</option>
+      <option value="pharmacy">pharmacy</option>
+      <option value="plan">plan</option>
+      <option value="poa">poa</option>
+      <option value="prime vendor">prime vendor</option>
+      <option value="provider">provider</option>
+      <option value="spouse">spouse</option>
+      <option value="third party">third party</option>
+    </select>
+    <div id="speakingToError" class="error" aria-live="polite"></div>
+
+    <label for="agent">agt call regarding:</label>
     <input type="text" id="agent">
 
-    <label>agt speaking to:</label>
-    <select id="speakingTo">
-      <option>member</option>
-      <option>pharmacy</option>
-      <option>provider</option>
-      <option>spouse</option>
-      <option>plan</option>
-      <option>poa</option>
-      <option>authorized representative</option>
-      <option>alexa (ai)</option>
-      <option>covermymeds representative</option>
-      <option>parent of minor</option>
-      <option>prime vendor</option>
-      <option>dte client group</option>
-      <option>third party</option>
-      <option>cms test caller</option>
-    </select>
-
-    <label>rx:</label>
+    <label for="rx">rx:</label>
     <input type="text" id="rx">
 
-    <label>res: advised agt to</label>
+    <label for="resolutionDropdown">res: advised agt to</label>
     <select id="resolutionDropdown">
+      <!-- Using your provided list -->
       <option value="">-- select an option --</option>
-      <option>review accumulators (deductible and out-of-pocket)</option>
-      <option>explore alternative medication options</option>
-      <option>initiate a callback</option>
-      <option>verify copay/coinsurance details via benefits</option>
+      <option>check/apply override per psa j/a</option>
+      <option>check mbr eligibility</option>
+      <option>check quantity limits on rx</option>
       <option>confirm coverage for rx</option>
       <option>create pr case per j/a</option>
+      <option>explore alternative medication options</option>
       <option>inform of formulary exception/coverage exception</option>
-      <option>how to resolve claim reject per j/a</option>
-      <option>apply override per psa j/a</option>
+      <option>initiate a call/callback</option>
       <option>initiate/fax forms for prior authorization</option>
-      <option>prior authorization denial reasoning</option>
+      <option>review prior authorization denial reasoning</option>
       <option>reach out to clinical regarding prior authorization for rx</option>
-      <option>check quantity limits on rx</option>
-      <option>check mbr eligibility</option>
+      <option>review accumulators (deductible and out-of-pocket)</option>
+      <option>to resolve claim reject per j/a</option>
+      <option>verify copay/coinsurance details via benefits</option>
     </select>
 
     <input type="text" id="resolutionText" placeholder="additional notes">
@@ -158,18 +170,32 @@
 
   <script>
     function generateNote() {
+      // Validate ONLY the "agt speaking to" placeholder
+      const speakingToSelect = document.getElementById('speakingTo');
+      const speakingToError = document.getElementById('speakingToError');
+      if (speakingToSelect.value === '') {
+        speakingToError.textContent = 'Please select who the agent is speaking to.';
+        speakingToSelect.focus();
+        return; // Stop submission
+      } else {
+        speakingToError.textContent = '';
+      }
+
       const agent = document.getElementById('agent').value;
       const agentId = document.getElementById('agentId').value;
-      const speakingTo = document.getElementById('speakingTo').value;
+      const speakingTo = speakingToSelect.value;
       const rx = document.getElementById('rx').value;
       const resolutionDropdown = document.getElementById('resolutionDropdown').value;
       const resolutionText = document.getElementById('resolutionText').value;
 
+      const resolutionSuffix = resolutionText ? ` - ${resolutionText}` : '';
+
       const note = `agt id: ${agentId}
-agt call regarding: ${agent}
 agt speaking to: ${speakingTo}
+agt call regarding: ${agent}
 rx: ${rx}
-res: advised agt to ${resolutionDropdown} - ${resolutionText}`;
+res: advised agt to ${resolutionDropdown}${resolutionSuffix}`;
+
       document.getElementById('output').value = note;
       document.getElementById('noteModal').style.display = 'block';
     }
@@ -183,10 +209,11 @@ res: advised agt to ${resolutionDropdown} - ${resolutionText}`;
     function clearForm() {
       document.getElementById('agent').value = '';
       document.getElementById('agentId').value = '';
-      document.getElementById('speakingTo').selectedIndex = 0;
+      document.getElementById('speakingTo').selectedIndex = 0; // reset to placeholder
       document.getElementById('rx').value = '';
       document.getElementById('resolutionDropdown').selectedIndex = 0;
       document.getElementById('resolutionText').value = '';
+      document.getElementById('speakingToError').textContent = '';
     }
 
     function resetPage() {
