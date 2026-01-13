@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Call Note Form</title>
+  <title>call note form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Century+Gothic&display=swap');
@@ -135,6 +135,7 @@
       <option value="">-- select an option --</option>
       <option>check/apply override per psa j/a</option>
       <option>check mbr eligibility</option>
+      <option>check pharm network</option>
       <option>check quantity limits on rx</option>
       <option>confirm coverage for rx</option>
       <option>create pr case per j/a</option>
@@ -145,8 +146,9 @@
       <option>review prior authorization denial reasoning</option>
       <option>reach out to clinical regarding prior authorization for rx</option>
       <option>review accumulators (deductible and out-of-pocket)</option>
-      <option>to resolve claim reject per j/a</option>
+      <option>review/resolve claim reject</option>
       <option>verify copay/coinsurance details via benefits</option>
+      <option>xfer caller</option>
     </select>
 
     <input type="text" id="resolutionText" placeholder="additional notes">
@@ -174,7 +176,7 @@
       const speakingToSelect = document.getElementById('speakingTo');
       const speakingToError = document.getElementById('speakingToError');
       if (speakingToSelect.value === '') {
-        speakingToError.textContent = 'Please select who the agent is speaking to.';
+        speakingToError.textContent = 'please select who the agt is speaking to.';
         speakingToSelect.focus();
         return; // Stop submission
       } else {
