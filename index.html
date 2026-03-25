@@ -133,16 +133,11 @@
       <option value="">-- select an option --</option>
       <!-- alphabetized list -->
       <option value="alexa (ai)">alexa (ai)</option>
-      <option value="authorized representative">authorized representative</option>
       <option value="cms test caller">cms test caller</option>
-      <option value="covermymeds representative">covermymeds representative</option>
-      <option value="dte client group">dte client group</option>
       <option value="member">member</option>
-      <option value="parent of minor">parent of minor</option>
+      <option value="parent of minor">parent</option>
       <option value="pharmacy">pharmacy</option>
       <option value="plan">plan</option>
-      <option value="poa">poa</option>
-      <option value="prime vendor">prime vendor</option>
       <option value="provider">provider</option>
       <option value="spouse">spouse</option>
       <option value="third party">third party</option>
@@ -158,22 +153,22 @@
     <label for="resolutionDropdown">res: advised agt to</label>
     <select id="resolutionDropdown">
       <option value="">-- select an option --</option>
+      <!-- alphabetized list -->
       <option>check/apply override per psa j/a</option>
-      <option>check mbr eligibility</option>
+      <option>check eligibility</option>
       <option>check pharm network</option>
-      <option>check quantity limits on rx</option>
-      <option>confirm coverage for rx</option>
+      <option>check quantity limits</option>
+      <option>confirm coverage</option>
       <option>create pr case per j/a</option>
+      <option>escalation/xfer caller</option>
       <option>explore alternative medication options</option>
       <option>inform of formulary exception/coverage exception</option>
-      <option>initiate a call/callback</option>
       <option>initiate/fax forms for prior authorization</option>
-      <option>review prior authorization denial reasoning</option>
-      <option>reach out to clinical regarding prior authorization for rx</option>
-      <option>review accumulators (deductible and out-of-pocket)</option>
+      <option>review prior authorization status</option>
+      <option>reach out to clinical regarding prior authorization</option>
+      <option>review accumulators</option>
       <option>review/resolve claim reject</option>
-      <option>verify copay/coinsurance details via benefits</option>
-      <option>xfer caller</option>
+      <option>verify costshare details via benefits</option>
     </select>
 
     <!-- Additional notes: placeholder reads "additional notes" and auto-expands -->
@@ -223,7 +218,7 @@
       const resolutionDropdown = document.getElementById('resolutionDropdown').value;
       const resolutionText = document.getElementById('resolutionText').value;
 
-      const resolutionSuffix = resolutionText ? ` - ${resolutionText}` : '';
+      const resolutionSuffix = resolutionText ? ` / ${resolutionText}` : '';
 
       const note = `agt id: ${agentId}
 agt speaking to: ${speakingTo}
